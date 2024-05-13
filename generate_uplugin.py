@@ -37,10 +37,11 @@ def create_plugin_files(plugin_name, module_name, module_type, loading_phase):
 
     # Create the module directory
     module_dir = os.path.join(plugin_name, 'Source', module_name)
-    os.makedirs(module_dir, exist_ok=True)
+    os.makedirs(os.path.join(module_dir, 'Public'), exist_ok=True)
+    os.makedirs(os.path.join(module_dir, 'Private'), exist_ok=True)
 
     # Create the .h and .cpp files for the module
-    with open(os.path.join(module_dir, module_name + '.h'), 'w') as f:
+    with open(os.path.join(module_dir, 'Public', module_name + '.h'), 'w') as f:
         f.write(f"""
 #pragma once
 
@@ -54,7 +55,7 @@ public:
 }};
         """)
 
-    with open(os.path.join(module_dir, module_name + '.cpp'), 'w') as f:
+    with open(os.path.join(module_dir, 'Private', module_name + '.cpp'), 'w') as f:
         f.write(f"""
 #include "{module_name}.h"
 
@@ -99,14 +100,14 @@ def main():
         if choice == '1':
             plugin_name = input("Enter the name of the new plugin: ")
             module_name = input("Enter the name of the first module: ")
-            module_type = input("Enter the type of the module (e.g., Runtime, Editor, ServerOnly, ClientOnly): ")
-            loading_phase = input("Enter the loading phase of the module(e.g., Default, PostEngneInit, PreloadingScreen): ")
+            module_type = input("Enter the type of the module (e.g., 'Runtime'): ")
+            loading_phase = input("Enter the loading phase of the module (e.g., 'Default'): ")
             create_plugin_files(plugin_name, module_name, module_type, loading_phase)
         elif choice == '2':
             plugin_name = input("Enter the name of the plugin: ")
             module_name = input("Enter the name of the new module: ")
-            module_type = input("Enter the type of the module (e.g., Runtime, Editor, ServerOnly, ClientOnly): ")
-            loading_phase = input("Enter the loading phase of the module (e.g., Default, PostEngneInit, PreloadingScreen): ")
+            module_type = input("Enter the type of the module (e.g., 'Runtime'): ")
+            loading_phase = input("Enter the loading phase of the module (e.g., 'Default'): ")
             create_plugin_files(plugin_name, module_name, module_type, loading_phase)
         elif choice == '3':
             break
